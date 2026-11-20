@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>rabbithole</Name>
+  <Repository>192.168.1.100:5000/rabbithole:latest</Repository>
+  <Network>bridge</Network>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Overview>Music discovery from your own listening. Reads ListenBrainz (scrobbled from Navidrome), ranks suggestions with AudioMuse, builds per-user Navidrome playlists and requests missing albums through Lidarr.</Overview>
+  <Category>MediaApp:Music</Category>
+  <WebUI>http://[IP]:[PORT:8080]/</WebUI>
+  <Icon>https://raw.githubusercontent.com/Bregann/Rabbithole/main/rabbithole.web/public/favicon.svg</Icon>
+  <Config Name="WebUI" Target="8080" Default="8080" Mode="tcp" Description="Web interface and API" Type="Port" Display="always" Required="true" Mask="false">8080</Config>
+  <Config Name="Logs" Target="/app/Logs" Default="/mnt/user/appdata/rabbithole/logs" Mode="rw" Description="Log files" Type="Path" Display="advanced" Required="false" Mask="false">/mnt/user/appdata/rabbithole/logs</Config>
+  <Config Name="Postgres connection string" Target="ConnectionStrings__rabbithole" Default="Host=192.168.1.100;Port=5432;Database=rabbithole;Username=rabbithole;Password=" Mode="" Description="Postgres database for Rabbithole. The database is created and migrated on first start." Type="Variable" Display="always" Required="true" Mask="true"></Config>
+  <Config Name="JWT key" Target="JwtKey" Default="" Mode="" Description="Random string, at least 32 characters. Changing it signs everyone out." Type="Variable" Display="always" Required="true" Mask="true"></Config>
+  <Config Name="Navidrome URL" Target="NavidromeUrl" Default="http://192.168.1.100:4533" Mode="" Description="Used for sign-in, library matching and playlists" Type="Variable" Display="always" Required="true" Mask="false"></Config>
+  <Config Name="Lidarr URL" Target="LidarrUrl" Default="http://192.168.1.100:8686" Mode="" Description="Where requested albums are sent" Type="Variable" Display="always" Required="false" Mask="false"></Config>
+  <Config Name="Lidarr API key" Target="LidarrApiKey" Default="" Mode="" Description="Lidarr → Settings → General → API Key" Type="Variable" Display="always" Required="false" Mask="true"></Config>
+  <Config Name="AudioMuse URL" Target="AudioMuseUrl" Default="" Mode="" Description="Optional: ranks suggestions by how they sound" Type="Variable" Display="always" Required="false" Mask="false"></Config>
+  <Config Name="AudioMuse API token" Target="AudioMuseApiToken" Default="" Mode="" Description="Optional: AudioMuse's API_TOKEN if it has auth turned on" Type="Variable" Display="advanced" Required="false" Mask="true"></Config>
+  <Config Name="Weekly request cap" Target="WeeklyRequestCap" Default="5" Mode="" Description="Max albums each user can send to Lidarr per week" Type="Variable" Display="advanced" Required="false" Mask="false">5</Config>
+  <Config Name="Hangfire username" Target="HangfireUsername" Default="admin" Mode="" Description="Login for the job dashboard at /hangfire" Type="Variable" Display="advanced" Required="false" Mask="false">admin</Config>
+  <Config Name="Hangfire password" Target="HangfirePassword" Default="" Mode="" Description="Password for the job dashboard at /hangfire" Type="Variable" Display="advanced" Required="false" Mask="true"></Config>
+  <Config Name="Seq URL" Target="SeqUrl" Default="" Mode="" Description="Optional: send logs to Seq" Type="Variable" Display="advanced" Required="false" Mask="false"></Config>
+</Container>

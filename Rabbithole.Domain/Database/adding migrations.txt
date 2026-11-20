@@ -1,0 +1,6 @@
+From the repo root:
+
+dotnet ef migrations add <MigrationName> --project Rabbithole.Domain --output-dir Database/Migrations
+
+Migrations are applied automatically when Rabbithole.Core starts.
+Never edit a migration that has already been applied anywhere.

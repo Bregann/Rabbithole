@@ -1,0 +1,32 @@
+# Example stack: Rabbithole (one image) + Postgres.
+# On Unraid you'd usually point Rabbithole at a Postgres container you already run instead.
+services:
+  rabbithole:
+    image: 192.168.1.100:5000/rabbithole:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      ConnectionStrings__rabbithole: "Host=postgres;Database=rabbithole;Username=rabbithole;Password=change-me"
+      JwtKey: "replace-with-a-random-string-of-at-least-32-characters"
+      NavidromeUrl: "http://navidrome:4533"
+      LidarrUrl: "http://lidarr:8686"
+      LidarrApiKey: ""
+      AudioMuseUrl: "http://audiomuse:8000"
+      AudioMuseApiToken: ""
+      HangfireUsername: "admin"
+      HangfirePassword: "change-me"
+    volumes:
+      - ./logs:/app/Logs
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: rabbithole
+      POSTGRES_USER: rabbithole
+      POSTGRES_PASSWORD: change-me
+    volumes:
+      - ./postgres:/var/lib/postgresql/data

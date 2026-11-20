@@ -1,0 +1,127 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard"
+  ],
+  "timezone": "Europe/London",
+  "schedule": [
+    "on monday"
+  ],
+  "minimumReleaseAge": "3 days",
+  "labels": [
+    "dependencies"
+  ],
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "labels": [
+      "security"
+    ],
+    "schedule": [
+      "at any time"
+    ],
+    "minimumReleaseAge": null,
+    "automerge": true
+  },
+  "packageRules": [
+    {
+      "description": "Bundle every minor and patch update into one weekly PR, auto-merged when CI passes",
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest"
+      ],
+      "groupName": "all non-major dependencies",
+      "groupSlug": "all-minor-patch",
+      "automerge": true
+    },
+    {
+      "description": "Major updates get their own PR and always wait for review",
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "automerge": false
+    },
+    {
+      "description": ".NET major versions (SDK images, Microsoft.* packages) need manual review",
+      "matchPackageNames": [
+        "mcr.microsoft.com/dotnet/**",
+        "Microsoft.**",
+        "System.**",
+        "Npgsql.**"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "groupName": ".NET major upgrade",
+      "automerge": false
+    },
+    {
+      "description": "Aspire packages move together: the AppHost SDK version lives in Rabbithole.AppHost.csproj's Sdk attribute",
+      "matchPackageNames": [
+        "Aspire.**"
+      ],
+      "groupName": "Aspire",
+      "automerge": false
+    },
+    {
+      "description": "Never offer .NET major versions for the Docker base images: they must change together with TargetFramework in the .csproj files, as a planned upgrade",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "mcr.microsoft.com/dotnet/**"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "enabled": false
+    },
+    {
+      "description": "Hold the web app on TypeScript 6: typescript-eslint (our ESLint parser) refuses to load on TS 7 (peer range <6.1.0 as of 8.72.x). Remove once typescript-eslint supports TS 7.",
+      "matchFileNames": [
+        "rabbithole.web/**"
+      ],
+      "matchPackageNames": [
+        "typescript"
+      ],
+      "allowedVersions": "<7"
+    },
+    {
+      "description": "Hold EF Core on 10.x until Npgsql's EF Core provider has a stable 11.x (it only has release candidates). When the Npgsql 11 PR appears, delete this rule in that PR so EF Core moves with it",
+      "matchPackageNames": [
+        "Microsoft.EntityFrameworkCore*",
+        "Microsoft.AspNetCore.DataProtection.EntityFrameworkCore",
+        "dotnet-ef"
+      ],
+      "allowedVersions": "<11.0.0"
+    },
+    {
+      "description": "Npgsql's EF Core provider majors track EF Core, so flag that EF Core must move in the same PR",
+      "matchPackageNames": [
+        "Npgsql.EntityFrameworkCore.PostgreSQL"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "groupName": "Npgsql and EF Core major upgrade",
+      "automerge": false,
+      "prBodyNotes": [
+        "EF Core is held on 10.x by a rule in renovate.json. Delete that rule in this PR and bump every Microsoft.EntityFrameworkCore* package (and dotnet-ef) to the same major, or the build will fail."
+      ]
+    }
+  ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": [
+      "on monday"
+    ],
+    "automerge": false,
+    "commitMessageAction": "Refresh package-lock.json",
+    "prBodyNotes": [
+      "Regenerates package-lock.json so dependencies-of-dependencies (where most npm vulnerabilities hide) get updated. If CI fails or the app misbehaves, just close this PR; next week's refresh will try again."
+    ]
+  },
+  "prHourlyLimit": 0,
+  "prConcurrentLimit": 20
+}

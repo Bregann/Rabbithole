@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.6578810">
+  <!-- Puts the React app in the solution so it opens in Visual Studio alongside the API.
+       Building the solution doesn't build the SPA: the web CI job, the Dockerfile and Aspire's publish step do that. -->
+  <PropertyGroup>
+    <StartupCommand>npm run dev</StartupCommand>
+    <ShouldRunNpmInstall>false</ShouldRunNpmInstall>
+    <ShouldRunBuildScript>false</ShouldRunBuildScript>
+    <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
+  </PropertyGroup>
+</Project>
