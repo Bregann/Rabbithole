@@ -1,7 +1,7 @@
 import { Button, Card, Grid, Group, Stack, Text, Title } from '@mantine/core'
 import { IconArrowRight } from '@tabler/icons-react'
 import { useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import TopTracksList from '@/components/artists/TopTracksList'
 import PageLoader from '@/components/common/PageLoader'
@@ -37,22 +37,20 @@ export default function RabbitholeComponent() {
     enabled: artistId !== undefined
   })
 
-  // Starting from a link (not a click in the graph) begins a fresh trail
+  // Arriving from a link (not a click in the graph) means the centre isn't on the trail yet: start a fresh one
   const centre = graphQuery.data?.artist
-  useEffect(() => {
-    if (centre !== undefined && !trail.some(t => t.deezerArtistId === centre.deezerArtistId)) {
-      setTrail([{ deezerArtistId: centre.deezerArtistId, name: centre.name }])
-    }
-  }, [centre, trail])
+  const visibleTrail: TrailEntry[] = centre !== undefined && !trail.some(t => t.deezerArtistId === centre.deezerArtistId)
+    ? [{ deezerArtistId: centre.deezerArtistId, name: centre.name }]
+    : trail
 
   const goTo = (artist: ArtistSummaryItem) => {
-    setTrail(current => [...current, { deezerArtistId: artist.deezerArtistId, name: artist.name }])
+    setTrail([...visibleTrail, { deezerArtistId: artist.deezerArtistId, name: artist.name }])
     void navigate(`/rabbithole/${artist.deezerArtistId}`)
   }
 
   const jumpBack = (index: number) => {
-    const target = trail[index]
-    setTrail(current => current.slice(0, index + 1))
+    const target = visibleTrail[index]
+    setTrail(visibleTrail.slice(0, index + 1))
     void navigate(`/rabbithole/${target.deezerArtistId}`)
   }
 
@@ -61,14 +59,14 @@ export default function RabbitholeComponent() {
       <Group justify="space-between" align="flex-end">
         <Stack gap={4}>
           <Title order={1}>Rabbithole</Title>
-          <RabbitholeTrail trail={trail} onJump={jumpBack} />
+          <RabbitholeTrail trail={visibleTrail} onJump={jumpBack} />
         </Stack>
         <GraphLegend />
       </Group>
 
       {graphQuery.error !== null && <QueryErrorAlert title="Couldn't load similar artists" error={graphQuery.error} />}
 
-      <Grid gutter="lg">
+      <Grid gap="lg">
         <Grid.Col span={{ base: 12, lg: 8 }}>
           <Card withBorder padding="xs">
             {graphQuery.isLoading && <PageLoader />}

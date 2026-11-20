@@ -85,7 +85,7 @@ export default function PlaylistComponent() {
         {canEdit && <Button leftSection={<IconPlus size={16} />} onClick={openAdd}>Add songs</Button>}
       </Group>
 
-      <Grid gutter="lg">
+      <Grid gap="lg">
         <Grid.Col span={{ base: 12, lg: 7 }}>
           <Card withBorder padding="sm">
             <PlaylistSongList

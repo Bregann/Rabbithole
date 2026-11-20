@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Moq;
 using Rabbithole.Domain.Helpers;
-using Rabbithole.Tests.Infrastructure;
+using MockFactory = Rabbithole.Tests.Infrastructure.MockFactory;
 
 namespace Rabbithole.Tests.Helpers
 {

@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Rabbithole.Domain.Database.Context;
+using Rabbithole.Domain.Database.Models;
 using Rabbithole.Domain.DTOs.Auth;
 using Rabbithole.Domain.DTOs.Auth.Requests;
 using Rabbithole.Domain.DTOs.Auth.Responses;
 using Rabbithole.Domain.DTOs.ThirdParty.Navidrome;
-using Rabbithole.Domain.Database.Context;
-using Rabbithole.Domain.Database.Models;
 using Rabbithole.Domain.Helpers;
 using Rabbithole.Domain.Interfaces.Api.Auth;
 using Rabbithole.Domain.Interfaces.Helpers;

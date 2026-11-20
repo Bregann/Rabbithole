@@ -29,7 +29,9 @@ namespace Rabbithole.Tests.Helpers
             await _environmentalSettingHelper.LoadEnvironmentalSettings();
         }
 
-        protected override async Task CustomTearDown()
+        // A [TearDown] method (not the CustomTearDown override) so NUnit's analyzer can see the provider is disposed
+        [TearDown]
+        public async Task DisposeServiceProvider()
         {
             await _serviceProvider.DisposeAsync();
         }

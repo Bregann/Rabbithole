@@ -24,6 +24,11 @@ interface RequestOptions {
 
 const MAX_RETRIES = 3
 
+// A request to an API that's down or still starting can hang; give up rather than spin forever
+const REQUEST_TIMEOUT_MS = 15_000
+
+const API_UNREACHABLE_MESSAGE = 'Can\'t reach the Rabbithole API. Is it running? (Check the api resource in the Aspire dashboard.)'
+
 async function refreshSession(): Promise<boolean> {
   const res = await fetch('/api/auth/RefreshToken', {
     method: 'POST',
@@ -52,7 +57,11 @@ async function parseResponse<T>(res: Response): Promise<FetchResponse<T>> {
   const text = await res.text()
 
   if (!res.ok) {
-    return { status: res.status, ok: false, statusMessage: getErrorMessage(text) }
+    // 502/503/504 with no body come from the dev proxy or a reverse proxy when the API itself is down
+    const isGatewayError = res.status >= 502 && res.status <= 504
+    const statusMessage = getErrorMessage(text) ?? (isGatewayError ? API_UNREACHABLE_MESSAGE : undefined)
+
+    return { status: res.status, ok: false, statusMessage }
   }
 
   if (text === '') {
@@ -79,7 +88,8 @@ async function doRequest<T>(method: HttpMethod, endpoint: string, options: Reque
           'Content-Type': 'application/json',
           ...headers
         },
-        body: body !== undefined ? JSON.stringify(body) : undefined
+        body: body !== undefined ? JSON.stringify(body) : undefined,
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS)
       })
 
       // Unauthorised: refresh the session and retry once
@@ -98,7 +108,7 @@ async function doRequest<T>(method: HttpMethod, endpoint: string, options: Reque
     }
   }
 
-  return { status: 500, ok: false, statusMessage: 'Could not reach Rabbithole. Is the server running?' }
+  return { status: 503, ok: false, statusMessage: API_UNREACHABLE_MESSAGE }
 }
 
 export const doGet = <T>(endpoint: string, options?: RequestOptions) =>

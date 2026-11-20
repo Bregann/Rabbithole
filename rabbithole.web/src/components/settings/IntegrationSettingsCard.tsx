@@ -1,5 +1,5 @@
 import { Button, Card, Group, PasswordInput, Stack, Text, TextInput, Title } from '@mantine/core'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import type { IntegrationSettingItem } from '@/interfaces/api/settings/GetIntegrationSettingsDto'
 import type { UpdateIntegrationSettingItem } from '@/interfaces/api/settings/UpdateIntegrationSettingsRequest'
 
@@ -20,11 +20,8 @@ const labels: Record<string, string> = {
 }
 
 export default function IntegrationSettingsCard({ settings, isSaving, onSave }: IntegrationSettingsCardProps) {
-  const [values, setValues] = useState<Record<string, string>>({})
-
-  useEffect(() => {
-    setValues(Object.fromEntries(settings.map(s => [s.key, s.value])))
-  }, [settings])
+  // The parent remounts this card (via key) when the saved settings change, so props only seed the form
+  const [values, setValues] = useState<Record<string, string>>(() => Object.fromEntries(settings.map(s => [s.key, s.value])))
 
   const setValue = (key: string, value: string) => setValues(current => ({ ...current, [key]: value }))
 

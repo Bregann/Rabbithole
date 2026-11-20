@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Rabbithole.Domain.DTOs.Discover.Responses;
 using Rabbithole.Domain.Database.Context;
+using Rabbithole.Domain.DTOs.Discover.Responses;
 using Rabbithole.Domain.Extensions;
 using Rabbithole.Domain.Interfaces.Api.Discover;
 using Rabbithole.Domain.Interfaces.Helpers;

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Rabbithole.Domain.DTOs.Artists.Responses;
 using Rabbithole.Domain.Database.Context;
+using Rabbithole.Domain.DTOs.Artists.Responses;
 using Rabbithole.Domain.Extensions;
 using Rabbithole.Domain.Interfaces.Api.Artists;
 using Rabbithole.Domain.Interfaces.Helpers;

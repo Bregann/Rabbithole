@@ -88,6 +88,7 @@ export default function SettingsComponent() {
         <Stack gap="lg">
           {mySettings.data !== undefined && (
             <ProfileSettingsCard
+              key={mySettings.data.listenBrainzUsername ?? ''}
               settings={mySettings.data}
               isSaving={saveProfile.isPending}
               onSave={listenBrainzUsername => saveProfile.mutate({ listenBrainzUsername })}
@@ -103,6 +104,7 @@ export default function SettingsComponent() {
           {status.data !== undefined && <SetupChecklistCard status={status.data} />}
           {isAdmin && integrations.data !== undefined && (
             <IntegrationSettingsCard
+              key={integrations.dataUpdatedAt}
               settings={integrations.data.settings}
               isSaving={saveIntegrations.isPending}
               onSave={settings => saveIntegrations.mutate({ settings })}

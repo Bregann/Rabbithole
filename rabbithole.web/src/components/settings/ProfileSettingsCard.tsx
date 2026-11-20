@@ -1,5 +1,5 @@
 import { Button, Card, Group, Stack, Text, TextInput, Title } from '@mantine/core'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import type { GetMySettingsDto } from '@/interfaces/api/settings/GetMySettingsDto'
 
 interface ProfileSettingsCardProps {
@@ -9,11 +9,8 @@ interface ProfileSettingsCardProps {
 }
 
 export default function ProfileSettingsCard({ settings, isSaving, onSave }: ProfileSettingsCardProps) {
+  // The parent remounts this card (via key) when the saved value changes, so props only seed the form
   const [listenBrainzUsername, setListenBrainzUsername] = useState(settings.listenBrainzUsername ?? '')
-
-  useEffect(() => {
-    setListenBrainzUsername(settings.listenBrainzUsername ?? '')
-  }, [settings.listenBrainzUsername])
 
   return (
     <Card withBorder padding="lg">

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Rabbithole.Domain.DTOs.ThirdParty.Lidarr;
 using Rabbithole.Domain.Database.Context;
 using Rabbithole.Domain.Database.Models;
+using Rabbithole.Domain.DTOs.ThirdParty.Lidarr;
 using Rabbithole.Domain.Enums;
 using Rabbithole.Domain.Extensions;
 using Rabbithole.Domain.Interfaces.Api.Requests;

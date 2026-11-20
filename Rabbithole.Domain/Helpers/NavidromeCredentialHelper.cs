@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Rabbithole.Domain.DTOs.ThirdParty.Navidrome;
 using Rabbithole.Domain.Database.Context;
+using Rabbithole.Domain.DTOs.ThirdParty.Navidrome;
 using Rabbithole.Domain.Interfaces.Helpers;
 
 namespace Rabbithole.Domain.Helpers

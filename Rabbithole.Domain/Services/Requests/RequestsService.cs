@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using Rabbithole.Domain.DTOs.Requests.Requests;
-using Rabbithole.Domain.DTOs.Requests.Responses;
 using Rabbithole.Domain.Database.Context;
 using Rabbithole.Domain.Database.Models;
+using Rabbithole.Domain.DTOs.Requests.Requests;
+using Rabbithole.Domain.DTOs.Requests.Responses;
 using Rabbithole.Domain.Enums;
 using Rabbithole.Domain.Exceptions;
 using Rabbithole.Domain.Interfaces.Api.Requests;
